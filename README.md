@@ -1,19 +1,49 @@
-🚀 Overview
-UniDesk is a centralized, web-based platform engineered to revolutionize the grievance redressal lifecycle in educational institutions. By bridging the communication gap between students and management, UniDesk empowers students to seamlessly submit, track, and manage complaints spanning campus facilities, academics, and administration. Simultaneously, it equips administrators with an intuitive, high-performance dashboard to resolve issues with unprecedented transparency, accountability, and speed.
+# 🎓 UniDesk
 
-✨ Key Value Propositions
-For Students:
+> A centralized, web-based platform engineered to revolutionize the grievance redressal lifecycle in educational institutions.
 
-Frictionless Submission: Multi-category ticketing system for quick reporting.
+![UniDesk Banner](https://via.placeholder.com/1200x400?text=UniDesk+Grievance+Redressal+Platform)
 
-Real-Time Tracking: Live status updates (Pending, In Progress, Resolved) with complete audit trails.
+## 🚀 Overview
 
-Direct Communication: Secure channels to interact with designated grievance officers.
+UniDesk bridges the communication gap between students and institutional management. It empowers students to seamlessly submit, track, and manage complaints spanning campus facilities, academics, and administration, while equipping administrators with an intuitive dashboard to resolve issues with transparency, accountability, and speed.
 
-For Administrators:
+---
 
-Centralized Dashboard: Comprehensive overview of incoming tickets, bottleneck areas, and resolution metrics.
+## ✨ Key Value Propositions
 
-Automated Routing: Intelligent assignment of complaints to the appropriate department or authority.
+### For Students:
+* **Frictionless Submission:** Multi-category ticketing system for quick, structured reporting.
+* **Real-Time Tracking:** Live status updates (*Pending*, *In Progress*, *Resolved*) with complete audit trails.
+* **Direct Communication:** Secure messaging channels to interact with designated grievance officers.
 
-Performance Analytics: Data-driven insights to measure response times and improve institutional efficiency.
+### For Administrators:
+* **Centralized Dashboard:** Comprehensive overview of incoming tickets, bottleneck departments, and resolution metrics.
+* **Automated Routing:** Intelligent assignment of complaints to the appropriate department or authority based on category keywords.
+* **Performance Analytics:** Data-driven insights to measure response times and improve overall institutional efficiency.
+
+---
+
+## 🗂️ System Architecture & Tech Stack
+
+* **Frontend:** Next.js, Tailwind CSS, Shadcn UI
+* **Backend:** Node.js, NestJS, Socket.io (Real-time updates)
+* **Database:** PostgreSQL managed via Prisma ORM
+* **Storage:** AWS S3 / Cloudinary for attachments
+* **Authentication:** JWT / Role-Based Access Control (RBAC)
+
+---
+
+## ⚙️ Getting Started (Local Development)
+
+Follow these steps to set up the project locally on your machine.
+
+### Prerequisites
+* Node.js (v18+ recommended)
+* PostgreSQL installed and running locally or via a cloud provider (e.g., Neon, Supabase)
+* Git
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/your-username/unidesk.git](https://github.com/your-username/unidesk.git)
+cd unidesk
