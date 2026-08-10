@@ -2,8 +2,6 @@
 
 > A centralized, web-based platform engineered to revolutionize the grievance redressal lifecycle in educational institutions.
 
-![UniDesk Banner](https://via.placeholder.com/1200x400?text=UniDesk+Grievance+Redressal+Platform)
-
 ## 🚀 Overview
 
 UniDesk bridges the communication gap between students and institutional management. It empowers students to seamlessly submit, track, and manage complaints spanning campus facilities, academics, and administration, while equipping administrators with an intuitive dashboard to resolve issues with transparency, accountability, and speed.
