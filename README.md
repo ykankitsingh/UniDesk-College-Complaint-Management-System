@@ -42,5 +42,5 @@ Follow these steps to set up the project locally on your machine.
 * Git
 
 ### 1. Clone the Repository
-git clone [https://github.com/your-username/unidesk.git](https://github.com/ykankitsingh/unidesk.git)
+git clone [https://github.com/ykankitsingh/unidesk.git](https://github.com/ykankitsingh/unidesk.git)
 cd unidesk
