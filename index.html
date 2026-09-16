@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BBDU Grievance & Resolution Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <style>
+    :root {
+      --bbd-navy: #1E3A8A;
+      --bbd-red: #E11D48;
+      --bbd-bg: #F8FAFC;
+    }
+
+    body {
+      background-color: var(--bbd-bg);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    /* --- BBD Branding Styles --- */
+    .navbar-bbd {
+      background: var(--bbd-navy);
+      border-bottom: 4px solid var(--bbd-red);
+    }
+
+    .bbd-badge-logo {
+      background: #ffffff;
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bbd-red);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .bbd-badge-text {
+      color: var(--bbd-red);
+      font-family: 'Arial Black', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+      line-height: 1;
+      letter-spacing: 0.5px;
+    }
+
+    .bbd-badge-line {
+      width: 24px;
+      height: 3px;
+      background-color: var(--bbd-navy);
+      margin-top: 2px;
+      border-radius: 2px;
+    }
+
+    /* --- Custom Notification Center --- */
+    .notification-dropdown {
+      width: 320px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-item.unread {
+      background-color: #EFF6FF;
+      border-left: 3px solid var(--bbd-navy);
+    }
+
+    /* --- Card & Badges --- */
+    .card-custom {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 0.35em 0.65em;
+      border-radius: 50rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-bbd sticky-top py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+        <div class="bbd-badge-logo">
+          <span class="bbd-badge-text">BBD</span>
+          <div class="bbd-badge-line"></div>
+        </div>
+        <div>
+          <div class="fw-bold fs-5 text-white lh-1">Babu Banarasi Das University</div>
+          <small class="text-light opacity-75 fs-7">Student Grievance Redressal System</small>
+        </div>
+      </a>
+
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <!-- Role Switcher (For Demo Testing) -->
+        <div class="bg-white bg-opacity-10 p-1 rounded d-flex align-items-center">
+          <label class="text-white small me-2 ms-2 fw-medium">View As:</label>
+          <select id="roleSelect" class="form-select form-select-sm border-0 bg-white" onchange="switchUserRole()">
+            <option value="12001">Student: Rahul Sharma (12001)</option>
+            <option value="12002">Student: Priya Verma (12002)</option>
+            <option value="ADMIN">University Admin</option>
+          </select>
+        </div>
+
+        <!-- Student Notification Bell -->
+        <div class="dropdown" id="notificationContainer">
+          <button class="btn btn-outline-light position-relative rounded-circle p-2" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-bell-fill fs-5"></i>
+            <span id="notifBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+              0
+            </span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end notification-dropdown shadow-lg p-0">
+            <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+              <h6 class="mb-0 fw-bold">Notifications</h6>
+              <button class="btn btn-sm btn-link text-decoration-none p-0" onclick="clearNotifications()">Clear All</button>
+            </div>
+            <div id="notificationList" class="list-group list-group-flush">
+              <!-- Dynamically populated notifications -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Portal Container -->
+  <div class="container py-4">
+    
+    <!-- STUDENT VIEW -->
+    <div id="studentView">
+      <div class="row g-4">
+        <!-- Submit Grievance Form -->
+        <div class="col-lg-4">
+          <div class="card card-custom p-4">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-pencil-square text-primary me-2"></i>Lodge a Grievance</h5>
+            <form id="grievanceForm" onsubmit="handleFormSubmit(event)">
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Category</label>
+                <select id="category" class="form-select" required>
+                  <option value="" selected disabled>Select Department</option>
+                  <option value="Academics">Academics & Examination</option>
+                  <option value="Hostel">Hostel & Mess</option>
+                  <option value="Library">Library Services</option>
+                  <option value="Transport">Campus Transport</option>
+                  <option value="Accounts">Fee & Accounts</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Subject Title</label>
+                <input type="text" id="subject" class="form-control" placeholder="Brief overview of issue" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Detailed Description</label>
+                <textarea id="description" class="form-control" rows="4" placeholder="Provide complete details..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-danger w-100 fw-bold py-2" style="background-color: var(--bbd-red); border:none;">
+                Submit Grievance
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Student Complaint History Table -->
+        <div class="col-lg-8">
+          <div class="card card-custom p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-dark mb-0"><i class="bi bi-clock-history text-primary me-2"></i>My Ticket History</h5>
+              <span class="badge bg-secondary" id="studentTicketCount">0 Tickets</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Ticket ID</th>
+                    <th>Category</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Admin Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="studentTicketTable">
+                  <!-- Dynamic Ticket Rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN VIEW -->
+    <div id="adminView" class="d-none">
+      <div class="card card-custom p-4 mb-4">
+        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-shield-lock-fill text-danger me-2"></i>University Grievance Management Desk</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>Ticket ID</th>
+                <th>Student Details</th>
+                <th>Category & Issue</th>
+                <th>Status</th>
+                <th>Action & Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="adminTicketTable">
+              <!-- Admin Controls Rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- Initial Mock Data Store ---
+    const defaultData = {
+      users: {
+        '12001': { name: 'Rahul Sharma', roll: '12001', dept: 'CSE' },
+        '12002': { name: 'Priya Verma', roll: '12002', dept: 'ECE' }
+      },
+      tickets: [
+        {
+          id: 'BBD-1001',
+          roll: '12001',
+          category: 'Academics',
+          subject: 'Discrepancy in Mid-Sem Marks Sheet',
+          description: 'Calculated marks in Data Structures do not match the published sheet.',
+          status: 'In Progress',
+          remark: 'Forwarded to Examination Cell.',
+          date: '2026-07-26'
+        },
+        {
+          id: 'BBD-1002',
+          roll: '12002',
+          category: 'Hostel',
+          subject: 'Water Cooler maintenance in Hostel 3',
+          description: 'The cooler on the 2nd floor is not functioning properly.',
+          status: 'Resolved',
+          remark: 'Repaired by maintenance team on Monday.',
+          date: '2026-07-25'
+        }
+      ],
+      notifications: [
+        { roll: '12001', text: 'Ticket BBD-1001 updated to "In Progress"', read: false, time: '2 hours ago' }
+      ]
+    };
+
+    // Load or initialize LocalStorage
+    function getStoredData() {
+      const stored = localStorage.getItem('bbdu_portal_db');
+      if (!stored) {
+        localStorage.setItem('bbdu_portal_db', JSON.stringify(defaultData));
+        return defaultData;
+      }
+      return JSON.parse(stored);
+    }
+
+    function saveData(data) {
+      localStorage.setItem('bbdu_portal_db', JSON.stringify(data));
+      renderPortal();
+    }
+
+    // --- Switch User / Admin ---
+    function switchUserRole() {
+      renderPortal();
+    }
+
+    function renderPortal() {
+      const db = getStoredData();
+      const selectedRole = document.getElementById('roleSelect').value;
+      
+      if (selectedRole === 'ADMIN') {
+        document.getElementById('studentView').classList.add('d-none');
+        document.getElementById('adminView').classList.remove('d-none');
+        document.getElementById('notificationContainer').classList.add('d-none');
+        renderAdminTable(db);
+      } else {
+        document.getElementById('studentView').classList.remove('d-none');
+        document.getElementById('adminView').classList.add('d-none');
+        document.getElementById('notificationContainer').classList.remove('d-none');
+        renderStudentTable(db, selectedRole);
+        renderNotifications(db, selectedRole);
+      }
+    }
+
+    // --- Student Ticket View ---
+    function renderStudentTable(db, roll) {
+      const tbody = document.getElementById('studentTicketTable');
+      tbody.innerHTML = '';
+      
+      const myTickets = db.tickets.filter(t => t.roll === roll);
+      document.getElementById('studentTicketCount').textContent = `${myTickets.length} Tickets`;
+
+      if (myTickets.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No grievances submitted yet.</td></tr>`;
+        return;
+      }
+
+      myTickets.forEach(ticket => {
+        const badgeClass = ticket.status === 'Resolved' ? 'bg-success' : ticket.status === 'In Progress' ? 'bg-warning text-dark' : 'bg-danger';
+        tbody.innerHTML += `
+          <tr>
+            <td><strong class="text-primary">${ticket.id}</strong></td>
+            <td><span class="badge bg-light text-dark border">${ticket.category}</span></td>
+            <td>
+              <div class="fw-bold">${ticket.subject}</div>
+              <small class="text-muted">${ticket.description}</small>
+            </td>
+            <td><span class="badge ${badgeClass} status-badge">${ticket.status}</span></td>
+            <td class="small text-secondary">${ticket.remark || '<em>No remarks yet</em>'}</td>
+          </tr>
+        `;
+      });
+    }
+
+    // --- Submit New Grievance ---
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const db = getStoredData();
+      const roll = document.getElementById('roleSelect').value;
+
+      const newTicket = {
+        id: 'BBD-' + Math.floor(1000 + Math.random() * 9000),
+        roll: roll,
+        category: document.getElementById('category').value,
+        subject: document.getElementById('subject').value,
+        description: document.getElementById('description').value,
+        status: 'Pending',
+        remark: 'Received by portal.',
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      db.tickets.unshift(newTicket);
+      saveData(db);
+
+      // Reset form
+      document.getElementById('grievanceForm').reset();
+      alert(`Grievance submitted successfully! Ticket ID: ${newTicket.id}`);
+    }
+
+    // --- Notifications System ---
+    function renderNotifications(db, roll) {
+      const userNotifs = db.notifications.filter(n => n.roll === roll);
+      const unreadCount = userNotifs.filter(n => !n.read).length;
+      
+      const badge = document.getElementById('notifBadge');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.classList.remove('d-none');
+      } else {
+        badge.classList.add('d-none');
+      }
+
+      const list = document.getElementById('notificationList');
+      list.innerHTML = '';
+
+      if (userNotifs.length === 0) {
+        list.innerHTML = `<div class="p-3 text-center text-muted small">No notifications available.</div>`;
+        return;
+      }
+
+      userNotifs.forEach((n, idx) => {
+        list.innerHTML += `
+          <div class="list-group-item notification-item ${!n.read ? 'unread' : ''} p-3">
+            <div class="d-flex w-100 justify-content-between">
+              <small class="fw-bold text-dark">${n.text}</small>
+            </div>
+            <small class="text-muted fs-7">${n.time}</small>
+          </div>
+        `;
+      });
+    }
+
+    function clearNotifications() {
+      const db = getStoredData();
+      const currentRoll = document.getElementById('roleSelect').value;
+      db.notifications = db.notifications.filter(n => n.roll !== currentRoll);
+      saveData(db);
+    }
+
+    // --- Admin Management View ---
+    function renderAdminTable(db) {
+      const tbody = document.getElementById('adminTicketTable');
+      tbody.innerHTML = '';
+
+      db.tickets.forEach(ticket => {
+        const student = db.users[ticket.roll] || { name: 'Unknown', roll: ticket.roll };
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${ticket.id}</strong><br><small class="text-muted">${ticket.date}</small></td>
+            <td>
+              <div class="fw-bold">${student.name}</div>
+              <small class="text-muted">Roll: ${student.roll}</small>
+            </td>
+            <td>
+              <span class="badge bg-info text-dark mb-1">${ticket.category}</span>
+              <div class="fw-semibold">${ticket.subject}</div>
+              <small class="text-muted">${ticket.description}</small>
+            </td>
+            <td>
+              <select class="form-select form-select-sm" id="status-${ticket.id}">
+                <option value="Pending" ${ticket.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="In Progress" ${ticket.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                <option value="Resolved" ${ticket.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" class="form-control form-control-sm mb-2" id="remark-${ticket.id}" placeholder="Enter remark" value="${ticket.remark || ''}">
+              <button class="btn btn-sm btn-primary w-100" onclick="updateTicketByAdmin('${ticket.id}')">Update & Notify</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // --- Admin Update Handler ---
+    function updateTicketByAdmin(ticketId) {
+      const db = getStoredData();
+      const ticket = db.tickets.find(t => t.id === ticketId);
+      
+      const newStatus = document.getElementById(`status-${ticketId}`).value;
+      const newRemark = document.getElementById(`remark-${ticketId}`).value;
+
+      ticket.status = newStatus;
+      ticket.remark = newRemark;
+
+      // Automatically add a real-time notification for the student
+      db.notifications.unshift({
+        roll: ticket.roll,
+        text: `Ticket ${ticket.id} status updated to "${newStatus}"`,
+        read: false,
+        time: 'Just now'
+      });
+
+      saveData(db);
+      alert(`Updated status for ticket ${ticketId}. Notification sent to student!`);
+    }
+
+    // Initialize application on page load
+    document.addEventListener('DOMContentLoaded', renderPortal);
+  </script>
+</body>
+</html>

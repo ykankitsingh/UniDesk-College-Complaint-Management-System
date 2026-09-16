@@ -1,0 +1,40 @@
+{
+  "complaints": [
+    {
+      "id": 1001,
+      "student": "Aarav Sharma",
+      "rollNo": "1200972023",
+      "email": "aarav.sharma@bbdu.ac.in",
+      "department": "Computer Science & Engineering",
+      "title": "Lab 4 Workstation Monitors Flickering",
+      "category": "Infrastructure",
+      "description": "Multiple monitors in CSE Computer Lab 4 (Block B) continuously flicker during afternoon lab slots.",
+      "status": "In Progress",
+      "date": "2026-07-25"
+    },
+    {
+      "id": 1002,
+      "student": "Priya Verma",
+      "rollNo": "1200982024",
+      "email": "priya.verma@bbdu.ac.in",
+      "department": "School of Management",
+      "title": "AC Cooling Issue in Lecture Hall 203",
+      "category": "Maintenance",
+      "description": "The central air conditioning unit in LH-203 is malfunctioning, making afternoon lectures difficult.",
+      "status": "Pending",
+      "date": "2026-07-26"
+    },
+    {
+      "id": 1003,
+      "student": "Rohan Gupta",
+      "rollNo": "1200952022",
+      "email": "student@bbdu.ac.in",
+      "department": "Mechanical Engineering",
+      "title": "Wi-Fi Connectivity dropping in Hostel Block C",
+      "category": "Hostel & IT",
+      "description": "Frequent Wi-Fi disconnections on the 3rd floor of Hostel Block C every evening after 8 PM.",
+      "status": "Pending",
+      "date": "2026-07-27"
+    }
+  ]
+}
